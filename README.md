@@ -4,7 +4,7 @@ Opogen is a tiny app which aims to recieve and spanish language document, mainly
 1. Load the oposition text as a string, cleaning the possible misleading parts.
     - A specific type of document is compulsory.
     - A specific type of format is compulsory.
-2. Take this string and train and LLM with it, usin embeddings for the case.
+2. Take this string and train and [LLM](https://openai.com/product) with it, usin embeddings for the case.
 3. Generate X diferent number of questions, the response will have this specific format:
     - [{
         Question: "Que dice la ley en el apartado 2",
