@@ -24,6 +24,14 @@ def load_txt(file_path):
 def load_string(input_string):
     return input_string
 
+def write_to_txt(strings, file_name):
+    try:
+        with open(file_name, 'a') as file:
+            file.write(strings + '\n')
+        print("Las cadenas se han escrito en el archivo:", file_name)
+    except Exception as e:
+        print("Error al escribir en el archivo:", e)
+
 def load_file_auto_detect(file_path):
     if file_path.endswith('.pdf'):
         return load_pdf(file_path)

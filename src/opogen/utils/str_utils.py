@@ -15,3 +15,9 @@ def delete_bloq(text):
     clean_text = re.sub(r'\[Bloque \d+: #[^\]]+\]', '', text)
 
     return clean_text
+
+def search_test_letter(text):
+    regex = r"[A-Za-z]\)"
+    has = re.findall(regex, text)
+
+    return bool(has)
