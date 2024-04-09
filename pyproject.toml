@@ -10,6 +10,8 @@ dependencies = [
     "python-docx>=1.1.0",
     "langchain>=0.1.14",
     "langchain-openai>=0.1.1",
+    "markdown>=3.6",
+    "fpdf>=1.7.2",
 ]
 requires-python = "==3.10.*"
 readme = "README.md"

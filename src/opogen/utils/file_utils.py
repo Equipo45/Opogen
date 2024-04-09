@@ -1,5 +1,8 @@
 import PyPDF2
 import docx
+from fpdf import FPDF
+
+from utils.str_utils import extract_title_from_path
 
 def load_pdf(file_path):
     with open(file_path, 'rb') as f:
@@ -41,3 +44,18 @@ def load_file_auto_detect(file_path):
         return load_txt(file_path)
     else:
         raise ValueError("Unsupported file format")
+    
+def txt_to_pdf(input_file, output_file, font_family='Arial', font_size=11):
+    with open(input_file, 'r', encoding='utf-8') as file:
+        text = file.read()
+
+    pdf = FPDF()
+    pdf.add_page()
+    
+    title = extract_title_from_path(input_file)
+    pdf.set_title(title)
+    
+    pdf.set_font(font_family, size=font_size)
+    pdf.write(h=font_size/2, txt=text)
+    
+    pdf.output(output_file)
