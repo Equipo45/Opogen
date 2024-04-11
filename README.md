@@ -27,9 +27,9 @@ Opogen is a tiny app that aims to receive a Spanish-language document, mainly a 
         Correct_answer: "B"
         }
     ]
-4. Write in the first pages the questions with the possible answers; on the last page the correct answers will be written, being equal to the position in the response array + 1.
+4. Write in the first page the questions with the possible answers; on the last page the correct answers will be written, being equal to the position in the response array + 1.
 5. This will be deployed as a service on a web page; the user only has to load the document and choose between a series of parameters:
-   1. Title of the examn
+   1. Title of the exam
    2. Difficulty
    3. Number of responses between [5, 25, 50, 75, 100]
 6. A database will be created with the registered users and the created exams, which will be public and monetized by the app.
