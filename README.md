@@ -7,7 +7,8 @@ Opogen is a tiny app that aims to receive a Spanish-language document, mainly an
     - If the file is large, it should be separated into chunks.
 2. **Take this string and train and [LLM](https://openai.com/product)** with it, using embeddings for the case or RAGS.
 3. **Generate X different number of questions**, and the response will have this specific format:
-    - [{
+```
+[{
         Question: "Que dice la ley en el apartado 2",
         Possible_answers: {
             A:,
@@ -27,6 +28,8 @@ Opogen is a tiny app that aims to receive a Spanish-language document, mainly an
         Correct_answer: "B"
         }
     ]
+```
+
 4. **Write in the first page the questions with the possible answers**; on the last page the correct answers will be written, being equal to the position in the response array + 1.
 5. **This will be deployed as a service on a web page**; the user only has to load the document and choose between a series of parameters:
    1. Title of the exam
