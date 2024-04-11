@@ -7,7 +7,7 @@ from langchain_openai import ChatOpenAI
 from llm.prompts import prompts
 
 def init_config(key):
-    os.environ["OPENAI_API_KEY"] = key
+    os.environ["OPENAI_API_KEY"] = key["OPEN_AI_KEY"]
 
 def get_opo_response(text_chunk, parser:PydanticOutputParser , options = 3, prompt_version = 1.0, model = "gpt-3.5-turbo-instruct"):
     try:
