@@ -1,12 +1,12 @@
+from io import BytesIO
 from typing import Dict, List
 from llm.parsers import parsers
-from llm.llm_service import get_opo_response
-from utils.str_utils import search_test_letter
-from utils.file_utils import write_to_txt, txt_to_pdf
+from llm.llm_service import get_opo_response, init_config
+from utils.str_utils import search_test_letter, extract_articles, delete_word_regex, delete_bloq
+from utils.file_utils import write_to_txt, write_chunk_to_pdf, load_file_auto_detect
+from config import config
 
-WRITE_FILE_PATH = "src/opogen/response_file/Examen_Prueba_3.txt"
-ENUM_LIST = ["A", "B", "C", "D", "E", "F"]
-PARSE_PDF_PATH = "src/opogen/response_file/Examen_Prueba_3.pdf"
+from _globals import ENUM_LIST
 
 def _opo_json_response(chunks:List[str]) -> Dict[str, List]: 
     all_responses = {
@@ -27,21 +27,35 @@ def _opo_json_response(chunks:List[str]) -> Dict[str, List]:
     return all_responses
 
 
-def write_chunk_to_pdf(chunks:List[str]) -> None:
+def write_chunk_to_pdf(chunks:List[str]) -> BytesIO:
     all_responses = _opo_json_response(chunks)
+    output_pdf = BytesIO()
+
     for enum_index, response_index in enumerate(range(len(all_responses["questions"]))):
-        write_to_txt(str(enum_index + 1) + ". "+ all_responses["questions"][response_index] + "\n", WRITE_FILE_PATH)
+        write_to_txt(str(enum_index + 1) + ". "+ all_responses["questions"][response_index] + "\n", output_pdf)
 
         for answer_index, answer in enumerate(range(len(all_responses["answers"][response_index]))):
             final_answer = all_responses["answers"][response_index][answer]
             if search_test_letter(final_answer):
-                write_to_txt(final_answer, WRITE_FILE_PATH)
+                write_to_txt(final_answer, output_pdf)
             else:
-                write_to_txt(ENUM_LIST[answer_index] + ") " + final_answer, WRITE_FILE_PATH)
-        write_to_txt("", WRITE_FILE_PATH)
-    write_to_txt("***SOLUCIONES***", WRITE_FILE_PATH)
+                write_to_txt(ENUM_LIST[answer_index] + ") " + final_answer, output_pdf)
+        write_to_txt("", output_pdf)
+
+    write_to_txt("***SOLUCIONES***", output_pdf)
     for enum_index, response_index in enumerate(range(len(all_responses["correct_response"]))):
         response_number = f"Solución pregunta número {enum_index + 1}:"
-        write_to_txt(response_number + " " + all_responses["correct_response"][response_index], WRITE_FILE_PATH)
+        write_to_txt(response_number + " " + all_responses["correct_response"][response_index], output_pdf)
     
-    txt_to_pdf(WRITE_FILE_PATH, PARSE_PDF_PATH)
+    output_pdf.seek(0)
+    return output_pdf
+    
+def return_generated_PDF():
+    init_config(config)
+
+    text = load_file_auto_detect(READ_FILE_PATH)
+    formated_text = delete_bloq(text)
+    formated_text = delete_word_regex(formated_text, "Subir")
+    chunks = extract_articles(formated_text)
+    
+    return write_chunk_to_pdf(chunks)

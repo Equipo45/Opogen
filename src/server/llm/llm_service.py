@@ -5,6 +5,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
 from llm.prompts import prompts
+from utils.logger import logger
 
 def init_config(key):
     os.environ["OPENAI_API_KEY"] = key["OPEN_AI_KEY"]
@@ -27,4 +28,6 @@ def get_opo_response(text_chunk, parser:PydanticOutputParser , options = 3, prom
         
         return response
     except Exception as e:
-        raise Exception(f"Some error occurr while getting openai response {e}")
+        str_exception = f"Some error occurr while getting openai response {e}"
+        logger.error(str_exception)
+        raise Exception(str_exception)

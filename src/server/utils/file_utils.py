@@ -1,8 +1,13 @@
+from utils.logger import logger
+
 import PyPDF2
 import docx
-from fpdf import FPDF
+from io import BytesIO
 
-from utils.str_utils import extract_title_from_path
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
 
 def load_pdf(file_path: str) -> str:
     with open(file_path, 'rb') as f:
@@ -27,13 +32,17 @@ def load_txt(file_path: str) -> str:
 def load_string(input_string: str) -> str:
     return input_string
 
-def write_to_txt(strings: str, file_name: str) -> None:
+def write_to_pdf(text: str, output_pdf: BytesIO, font_name: str = "Arial", font_size: int = 11) -> None:
     try:
-        with open(file_name, 'a') as file:
-            file.write(strings + '\n')
-        print("Las cadenas se han escrito en el archivo:", file_name)
+        c = canvas.Canvas(output_pdf, pagesize=letter)
+        pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))
+        c.setFont(font_name, font_size)
+        c.drawString(100, 700, text)  # Adjust position as needed
+        c.save()
+        
+        logger.info("Text has been written to the PDF")
     except Exception as e:
-        print("Error al escribir en el archivo:", e)
+        logger.error("Error writing to PDF:", e)
 
 def load_file_auto_detect(file_path: str) -> None:
     if file_path.endswith('.pdf'):
@@ -43,19 +52,5 @@ def load_file_auto_detect(file_path: str) -> None:
     elif file_path.endswith('.txt'):
         return load_txt(file_path)
     else:
+        logger.error(f"A user uploaded an unsoported format {file_path.split('.')[-1]}")
         raise ValueError("Unsupported file format")
-    
-def txt_to_pdf(input_file: str, output_file: str, font_family='Arial', font_size=11) -> None:
-    with open(input_file, 'r', encoding='utf-8') as file:
-        text = file.read()
-
-    pdf = FPDF()
-    pdf.add_page()
-    
-    title = extract_title_from_path(input_file)
-    pdf.set_title(title)
-    
-    pdf.set_font(font_family, size=font_size)
-    pdf.write(h=font_size/2, txt=text)
-    
-    pdf.output(output_file)
