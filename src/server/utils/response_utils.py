@@ -34,7 +34,7 @@ def _opo_json_response(chunks: List[str]) -> Dict[str, List]:
     return all_responses
 
 
-def write_chunk_to_pdf(chunks: List[str]) -> BytesIO:
+def write_chunk_return_pdf(chunks: List[str]) -> BytesIO:
     all_responses = _opo_json_response(chunks)
     output_pdf = BytesIO()
 
@@ -71,10 +71,10 @@ def write_chunk_to_pdf(chunks: List[str]) -> BytesIO:
     return output_pdf
 
 
-def return_generated_PDF():
+def return_generated_PDF(text):
     init_config(config)
 
-    text = load_file_auto_detect(READ_FILE_PATH)
+    text = load_file_auto_detect()
     formated_text = delete_bloq(text)
     formated_text = delete_word_regex(formated_text, "Subir")
     chunks = extract_articles(formated_text)

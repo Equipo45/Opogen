@@ -6,7 +6,7 @@
     <main>
       <section>
         <h2>Upload Document</h2>
-        <input type="file" @change="handleFileUpload">
+        <input type="file" accept=".docx, .pdf" @change="handleFileUpload">
       </section>
       <section v-if="selectedDocument">
         <h2>{{ selectedDocument.name }}</h2>
@@ -14,7 +14,7 @@
       </section>
     </main>
     <footer>
-      <p>© 2024 Exam Generator. All rights reserved.</p>
+      <p>© 2024 Opogen. All rights <a href="https://github.com/Equipo45">reserved</a>.</p>
     </footer>
   </div>
 </template>
@@ -31,6 +31,7 @@ export default {
   methods: {
     handleFileUpload(event) {
       this.selectedDocument = event.target.files[0];
+      console.log('MIME type:', this.selectedDocument.type);
     },
     generateExam() {
       if (!this.selectedDocument) {
