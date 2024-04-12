@@ -1,6 +1,6 @@
-from typing import List
-import re
 import os
+import re
+from typing import List
 
 
 def extract_articles(texto: str) -> List[str]:

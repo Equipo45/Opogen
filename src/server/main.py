@@ -1,7 +1,7 @@
-from flask import Flask, request, send_file, jsonify
-from utils.file_utils import write_chunk_to_pdf
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
+from utils.file_utils import write_chunk_to_pdf
 
 app = Flask(__name__)
 app.config.from_object(__name__)

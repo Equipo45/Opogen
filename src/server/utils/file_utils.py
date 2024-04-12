@@ -1,13 +1,13 @@
-from utils.logger import logger
-
-import PyPDF2
-import docx
 from io import BytesIO
 
+import docx
+import PyPDF2
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+
+from utils.logger import logger
 
 
 def load_pdf(file_path: str) -> str:

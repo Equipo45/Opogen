@@ -1,21 +1,14 @@
 from io import BytesIO
 from typing import Dict, List
-from llm.parsers import parsers
-from llm.llm_service import get_opo_response, init_config
-from utils.str_utils import (
-    search_test_letter,
-    extract_articles,
-    delete_word_regex,
-    delete_bloq,
-)
-from utils.file_utils import (
-    write_to_txt,
-    write_chunk_to_pdf,
-    load_file_auto_detect,
-)
-from config import config
 
 from _globals import ENUM_LIST
+from config import config
+from llm.llm_service import get_opo_response, init_config
+from llm.parsers import parsers
+from utils.file_utils import (load_file_auto_detect, write_chunk_to_pdf,
+                              write_to_txt)
+from utils.str_utils import (delete_bloq, delete_word_regex, extract_articles,
+                             search_test_letter)
 
 
 def _opo_json_response(chunks: List[str]) -> Dict[str, List]:
