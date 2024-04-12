@@ -50,7 +50,11 @@ ignore = [
     "E501",  # Ignore "Line too long" error
 ]
 
-[tool.codespell]
+[tool.codespell.en]
+count = true
+quiet-level = 3
+
+[tool.codespell.es]
 count = true
 quiet-level = 3
 
