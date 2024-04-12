@@ -35,4 +35,4 @@ def get_opo_response(
     except Exception as e:
         str_exception = f"Some error occurr while getting openai response {e}"
         logger.error(str_exception)
-        raise Exception(str_exception)
+        raise Exception(str_exception) from e

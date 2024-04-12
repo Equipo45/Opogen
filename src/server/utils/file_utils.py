@@ -38,7 +38,10 @@ def load_string(input_string: str) -> str:
 
 
 def write_to_pdf(
-    text: str, output_pdf: BytesIO, font_name: str = "Arial", font_size: int = 11
+    text: str,
+    output_pdf: BytesIO,
+    font_name: str = "Arial",
+    font_size: int = 11,
 ) -> None:
     try:
         c = canvas.Canvas(output_pdf, pagesize=letter)

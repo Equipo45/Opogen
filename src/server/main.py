@@ -25,7 +25,9 @@ def exam_generator():
         pdf_content.seek(0)
 
         return send_file(
-            pdf_content, attachment_filename="generated_exam.pdf", as_attachment=True
+            pdf_content,
+            attachment_filename="generated_exam.pdf",
+            as_attachment=True,
         )
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500

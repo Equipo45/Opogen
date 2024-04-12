@@ -25,14 +25,6 @@ license = {text = "MIT"}
 [tool.pdm]
 distribution = false
 
-[tool.ruff]
-# Allow lines to be as long as 80.
-line-length = 80
-exclude = [
-    # External file, leaving license intact
-    "examples/fp8/quantizer/quantize.py"
-]
-
 [tool.ruff.lint]
 select = [
     # pycodestyle
@@ -55,11 +47,12 @@ ignore = [
     "E731",
     # Loop control variable not used within loop body
     "B007",
+    "E501",  # Ignore "Line too long" error
 ]
 
 [tool.codespell]
-ignore-words-list = "dout, te, indicies"
-skip = "./tests/prompts,./benchmarks/sonnet.txt"
+count = true
+quiet-level = 3
 
 [tool.isort]
 use_parentheses = true

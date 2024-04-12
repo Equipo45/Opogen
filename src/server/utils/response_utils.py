@@ -8,7 +8,11 @@ from utils.str_utils import (
     delete_word_regex,
     delete_bloq,
 )
-from utils.file_utils import write_to_txt, write_chunk_to_pdf, load_file_auto_detect
+from utils.file_utils import (
+    write_to_txt,
+    write_chunk_to_pdf,
+    load_file_auto_detect,
+)
 from config import config
 
 from _globals import ENUM_LIST
