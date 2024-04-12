@@ -31,7 +31,7 @@ jobs:
         ruff .
     - name: Spelling check with codespell
       run: |
-        codespell --toml pyproject.toml
+        codespell --toml src/server/pyproject.toml
     - name: Run isort
       run: |
         isort . --check-only

@@ -24,3 +24,43 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.ruff]
+# Allow lines to be as long as 80.
+line-length = 80
+exclude = [
+    # External file, leaving license intact
+    "examples/fp8/quantizer/quantize.py"
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    # "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    # "I",
+]
+ignore = [
+    # star imports
+    "F405", "F403",
+    # lambda expression assignment
+    "E731",
+    # Loop control variable not used within loop body
+    "B007",
+]
+
+[tool.codespell]
+ignore-words-list = "dout, te, indicies"
+skip = "./tests/prompts,./benchmarks/sonnet.txt"
+
+[tool.isort]
+use_parentheses = true
+skip_gitignore = true
