@@ -18,5 +18,5 @@ prompts = {
     {articles}
     Tu objetivo es hacer una pregunta dificil de resolver, con respuesta que sean muy parecidas entre si, sin mencionar el artículo. Devuelve finalmente la letra de la repuesta correcta.
     {format_instructions}
-    """
+    """,
 }
