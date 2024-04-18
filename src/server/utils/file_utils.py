@@ -1,37 +1,11 @@
-from io import BytesIO
+from io import BytesIO, StringIO
 
-import docx
-import PyPDF2
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
 from utils.logger import logger
-
-
-def load_pdf(file_path: str) -> str:
-    with open(file_path, "rb") as f:
-        pdf_reader = PyPDF2.PdfFileReader(f)
-        text = ""
-        for page_num in range(pdf_reader.numPages):
-            page = pdf_reader.getPage(page_num)
-            text += page.extractText()
-        return text
-
-
-def load_docx(file_path: str) -> str:
-    doc = docx.Document(file_path)
-    text = []
-    for paragraph in doc.paragraphs:
-        text.append(paragraph.text)
-    return "\n".join(text)
-
-
-def load_txt(file_path: str) -> str:
-    with open(file_path, "r") as f:
-        return f.read()
-
 
 def load_string(input_string: str) -> str:
     return input_string
@@ -55,13 +29,23 @@ def write_to_pdf(
         logger.error("Error writing to PDF:", e)
 
 
-def load_file_auto_detect(file_path: str) -> None:
-    if file_path.endswith(".pdf"):
-        return load_pdf(file_path)
-    elif file_path.endswith(".docx"):
-        return load_docx(file_path)
-    elif file_path.endswith(".txt"):
-        return load_txt(file_path)
-    else:
-        logger.error(f"A user uploaded an unsoported format {file_path.split('.')[-1]}")
-        raise ValueError("Unsupported file format")
+def load_file_auto_detect(uploaded_file) -> str:
+    encodings = ['utf-8', 'latin-1', 'utf-16']
+
+    for encoding in encodings:
+        try:
+            stringio = StringIO(uploaded_file.getvalue().decode(encoding))
+            string_data = stringio.read()
+            return string_data
+        except UnicodeDecodeError:
+            continue
+
+    raise ValueError("Unable to decode the file with any of the specified encodings")
+    
+def write_to_txt(strings, file_name):
+    try:
+        with open(file_name, 'a') as file:
+            file.write(strings + '\n')
+        print("Las cadenas se han escrito en el archivo:", file_name)
+    except Exception as e:
+        print("Error al escribir en el archivo:", e)

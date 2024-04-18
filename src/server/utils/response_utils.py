@@ -2,11 +2,9 @@ from io import BytesIO
 from typing import Dict, List
 
 from _globals import ENUM_LIST
-from config import config
-from llm.llm_service import get_opo_response, init_config
+from llm.llm_service import get_opo_response
 from llm.parsers import parsers
-from utils.file_utils import (load_file_auto_detect, write_chunk_to_pdf,
-                              write_to_txt)
+from utils.file_utils import (load_file_auto_detect, write_to_txt)
 from utils.str_utils import (delete_bloq, delete_word_regex, extract_articles,
                              search_test_letter)
 
@@ -69,11 +67,9 @@ def write_chunk_return_pdf(chunks: List[str]) -> BytesIO:
 
 
 def return_generated_PDF(text):
-    init_config(config)
-
-    text = load_file_auto_detect()
     formated_text = delete_bloq(text)
     formated_text = delete_word_regex(formated_text, "Subir")
     chunks = extract_articles(formated_text)
 
-    return write_chunk_to_pdf(chunks)
+    return write_chunk_return_pdf(chunks)
+

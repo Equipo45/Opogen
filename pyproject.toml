@@ -16,6 +16,7 @@ dependencies = [
     "Flask-Cors==3.0.10",
     "Werkzeug==2.2.2",
     "reportlab>=4.1.0",
+    "streamlit>=1.33.0",
 ]
 requires-python = "==3.10.*"
 readme = "README.md"
