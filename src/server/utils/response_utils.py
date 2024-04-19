@@ -4,7 +4,7 @@ from typing import Dict, List
 from _globals import ENUM_LIST
 from llm.llm_service import get_opo_response
 from llm.parsers import parsers
-from utils.file_utils import (load_file_auto_detect, write_to_txt)
+from utils.file_utils import (write_to_txt, txt_to_pdf_with_font)
 from utils.str_utils import (delete_bloq, delete_word_regex, extract_articles,
                              search_test_letter)
 
@@ -29,9 +29,9 @@ def _opo_json_response(chunks: List[str]) -> Dict[str, List]:
     return all_responses
 
 
-def write_chunk_return_pdf(chunks: List[str]) -> BytesIO:
+def write_chunk_return_pdf(chunks: List[str], pdf_path_name: str) -> BytesIO:
     all_responses = _opo_json_response(chunks)
-    output_pdf = BytesIO()
+    output_pdf = pdf_path_name
 
     for enum_index, response_index in enumerate(range(len(all_responses["questions"]))):
         write_to_txt(
@@ -52,7 +52,7 @@ def write_chunk_return_pdf(chunks: List[str]) -> BytesIO:
                 write_to_txt(ENUM_LIST[answer_index] + ") " + final_answer, output_pdf)
         write_to_txt("", output_pdf)
 
-    write_to_txt("***SOLUCIONES***", output_pdf)
+    write_to_txt("SOLUCIONES", output_pdf)
     for enum_index, response_index in enumerate(
         range(len(all_responses["correct_response"]))
     ):
@@ -62,14 +62,13 @@ def write_chunk_return_pdf(chunks: List[str]) -> BytesIO:
             output_pdf,
         )
 
-    output_pdf.seek(0)
-    return output_pdf
+    return txt_to_pdf_with_font(output_pdf)
 
 
-def return_generated_PDF(text):
+def return_generated_PDF(text, pdf_path_name):
     formated_text = delete_bloq(text)
     formated_text = delete_word_regex(formated_text, "Subir")
     chunks = extract_articles(formated_text)
 
-    return write_chunk_return_pdf(chunks)
+    return write_chunk_return_pdf(chunks, pdf_path_name)
 
