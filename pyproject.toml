@@ -17,6 +17,7 @@ dependencies = [
     "Werkzeug==2.2.2",
     "reportlab>=4.1.0",
     "streamlit>=1.33.0",
+    "fonttools>=4.51.0",
 ]
 requires-python = "==3.10.*"
 readme = "README.md"
