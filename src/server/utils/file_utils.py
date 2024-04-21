@@ -1,18 +1,14 @@
 import os
-import requests
 from io import BytesIO
 
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from fontTools.ttLib import TTFont
 
+from fpdf import FPDF
 import PyPDF2
 import docx
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE_PATH = os.path.join(script_dir, "logs", "download_files")
-ARIAL_URL = "https://github.com/microsoft/calibri/raw/main/fonts/ttf/arial.ttf"
 
 def load_string(input_string: str) -> str:
     return input_string
@@ -30,13 +26,6 @@ def load_file_auto_detect(uploaded_file) -> str:
         return "Unsupported file type! Please upload a PDF, DOCX, or TXT file."
     
     return text
-
-def _install_font(url):
-    response = requests.get(url)
-    with open("arial.ttf", "wb") as f:
-        f.write(response.content)
-    font = TTFont("arial.ttf")
-    font.saveXML("arial.xml")
     
 def _get_filename_directoryname(file_name):
     file_path =  os.path.join(LOG_FILE_PATH, (file_name + ".txt"))
@@ -55,35 +44,24 @@ def write_to_txt(strings, file_name):
     except Exception as e:
         print("Error al escribir en el archivo:", e)
         
-def txt_to_pdf_with_font(txt_file_path, font_name='Arial', font_size=12, pdf_file_path=None):
+def txt_to_pdf_with_font(txt_file_path, font_name="Arial", font_size=12, page_format = "---"):
     try:
         file_path, _ = _get_filename_directoryname(txt_file_path)
         with open(file_path, 'r') as file:
             text = file.read()
-            
-        buffer = BytesIO()
-        doc = SimpleDocTemplate(buffer, pagesize=letter)
 
-        style = getSampleStyleSheet()['Normal']
-        style = ParagraphStyle(name='Normal', fontName=font_name, fontSize=font_size)
+        pdf = FPDF()
+        for segment in text.split(page_format):
+            pdf.add_page()
+            pdf.set_font(font_name, size=font_size)
+            pdf.multi_cell(0, 10, segment)
 
-        _install_font(ARIAL_URL)
-        
-        content = [Paragraph(text, style)]
-        doc.build(content)
-        pdf_bytes = buffer.getvalue()
-
-        if pdf_file_path:
-            with open(pdf_file_path, 'wb') as pdf_file:
-                pdf_file.write(pdf_bytes)
-
-        return pdf_bytes
+        return pdf.output(dest='S').encode('latin1')
     except Exception as e:
-        print("Error converting txt to pdf:", e)
-        return None
+        raise Exception("Error converting txt to pdf:", e)
 
 def read_pdf(file):
-    pdf_reader = PyPDF2.PdfFileReader(file)
+    pdf_reader = PyPDF2.PdfReader(file)
     text = ""
     for page_num in range(pdf_reader.numPages):
         page = pdf_reader.getPage(page_num)

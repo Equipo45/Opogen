@@ -9,7 +9,7 @@ from utils.str_utils import (delete_bloq, delete_word_regex, extract_articles,
                              search_test_letter)
 
 
-def _opo_json_response(chunks: List[str]) -> Dict[str, List]:
+def _opo_json_response(chunks: List[str], model) -> Dict[str, List]:
     all_responses = {"questions": [], "answers": [], "correct_response": []}
 
     for chunk in chunks:
@@ -17,8 +17,8 @@ def _opo_json_response(chunks: List[str]) -> Dict[str, List]:
             response = get_opo_response(
                 chunk.strip(),
                 parsers["three_answers"],
-                prompt_version=1.2,
-                model="gpt-4-turbo-preview",
+                prompt_version=1.4,
+                model=model
             )
             all_responses["questions"].append(response.question)
             all_responses["answers"].append(response.response)
@@ -29,16 +29,15 @@ def _opo_json_response(chunks: List[str]) -> Dict[str, List]:
     return all_responses
 
 
-def write_chunk_return_pdf(chunks: List[str], pdf_path_name: str) -> BytesIO:
-    all_responses = _opo_json_response(chunks)
+def write_chunk_return_pdf(chunks: List[str], pdf_path_name: str, model: str) -> BytesIO:
+    all_responses = _opo_json_response(chunks, model)
     output_pdf = pdf_path_name
 
     for enum_index, response_index in enumerate(range(len(all_responses["questions"]))):
         write_to_txt(
             str(enum_index + 1)
             + ". "
-            + all_responses["questions"][response_index]
-            + "\n",
+            + all_responses["questions"][response_index],
             output_pdf,
         )
 
@@ -65,10 +64,10 @@ def write_chunk_return_pdf(chunks: List[str], pdf_path_name: str) -> BytesIO:
     return txt_to_pdf_with_font(output_pdf)
 
 
-def return_generated_PDF(text, pdf_path_name):
+def return_generated_PDF(text, pdf_path_name, model):
     formated_text = delete_bloq(text)
     formated_text = delete_word_regex(formated_text, "Subir")
     chunks = extract_articles(formated_text)
 
-    return write_chunk_return_pdf(chunks, pdf_path_name)
+    return write_chunk_return_pdf(chunks, pdf_path_name, model)
 
