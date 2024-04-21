@@ -63,7 +63,7 @@ def txt_to_pdf_with_font(txt_file_path, font_name="Arial", font_size=12, page_fo
 def read_pdf(file):
     pdf_reader = PyPDF2.PdfReader(file)
     text = ""
-    for page_num in range(pdf_reader.numPages):
+    for page_num in range(len(pdf_reader.pages)):
         page = pdf_reader.getPage(page_num)
         text += page.extractText()
     return text
