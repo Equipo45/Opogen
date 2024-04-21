@@ -6,7 +6,7 @@ AVAILIBLE_MODELS = ["gpt-3.5-turbo-instruct", "gpt-4-turbo-preview"]
 def ask_for_password():
     entered_password = st.sidebar.text_input("Introduce la contrasena para acceder a la aplicacion", type="password")
     
-    if entered_password == os.environ.get["PASSWORD"]:
+    if entered_password == os.environ.get("PASSWORD"):
         st.empty()
     else:
         st.stop()
