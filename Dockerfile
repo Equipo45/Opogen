@@ -1,5 +1,5 @@
 #docker run -p 8501:8501 -e OPEN_AI_KEY="your_open_ai_key" -e PASSWORD="your_password" my-streamlit-app
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
