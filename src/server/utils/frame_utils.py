@@ -9,6 +9,7 @@ def ask_for_password():
     if entered_password == os.environ.get("PASSWORD"):
         st.empty()
     else:
+        st.info("⬅️ ⬅️ ⬅️ Abre la barra lateral e introduce la contrasena, maquina👍")
         st.stop()
 
 def select_gpt_model():
